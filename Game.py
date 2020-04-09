@@ -17,34 +17,55 @@ def Events():
             if event.key == pygame.RIGHT:
                 Square.Jump("right")
 
+class Platform:
+    def __init__(self, Pos, Color):
+        self.Width = 100
+        self.Height = 25
+        self.Pos = (Pos[0] - (self.Width/2), Pos[1] - (self.Height/2))
+        self.Color = Color
+        self.Rect = Rect((self.Pos[0], self.Pos[1]), (self.Width, self.Height))
+
+        Platforms.append(self)
+
 class Square:
-    Size = (50, 50)
-    Pos = (0, 0)
-    #Rect = pygame.Rect(Pos, (Width, Height))
+    def __init__(self, Pos, Color):
+        self.Width = 50
+        self.Height = 50
+        self.Pos = (Pos[0] - (self.Width/2), Pos[1] - (self.Height/2))
+        self.Rect = pygame.Rect(Pos, (self.Width, self.Height))
 
-    def Jump(self, Direction):
-        print(1)
+    def Jump():
+        if (self.Pos[0]+50, self.Pos[1]+50) in Platforms and Direction == "left":
+            print("you jumped right")
+            self.Pos = (self.Pos[0]+50, self.Pos[1]+50)
+        elif (self.Pos[0]-50, self.Pos[1]+50) in Platforms and Direction == "right":
+            print("you jumped left")
+            self.Pos = (self.Pos[0]-50, self.Pos[1]+50)
 
-def PlatformTree():
-    Platforms = []
-    Pos = (0, 0)
+Platforms = []
+
+def PlatformTree(Platform, Amount, Platforms):
+    Pos = Platform.Pos
     Paths = random.randrange(1, 3)
-    print(Paths)
     if Paths == 1:
-        Pos = (0 - [50, -50][random.randrange(0, 1)], 0)
-        #Platforms.append(Platform(Pos))
+        Platforms.append(Platform((0 - [50, -50][random.randrange(0, 1)], Pos[1] + 50)))
     elif Paths == 2:
-        Pos[0] = Pos[0] - 50
-        #Platforms.append(Platform(Pos))
-        Pos[0] = Pos[0] + 50
-        #Platforms.append(Platform(Pos))
-    print(Pos)
-    #PlatformTree(Platforms[random.randrange(0,1) if len(Platforms) > 0 else 0])
+        Platforms.append(Platform((Pos[0] - 50, Pos[1] + 50)))
+        Platforms.append(Platform((Pos[0] + 100, Pos[1])))
+    else:
+        return 0
+    Amount = Amount + Paths if Paths != 3 else 0
+    if Amount < 50:
+        PlatformTree(Platforms[0], Amount, Platforms)
+        PlatformTree(Platforms[1], Amount, Platforms)
 
-PlatformTree()
+#PlatformTree()
 
 while True:
     Screen.fill((0, 0, 0))
+
+    for i in range(len(Platforms)):
+        pygame.draw.rect(Surface, Platforms[i].Color, Platforms[i].Rect)
 
     Events()
 
