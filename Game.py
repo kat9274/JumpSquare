@@ -34,7 +34,7 @@ class Square:
         self.Pos = (Pos[0] - (self.Width/2), Pos[1] - (self.Height/2))
         self.Rect = pygame.Rect(Pos, (self.Width, self.Height))
 
-    def Jump():
+    def Jump(self):
         if (self.Pos[0]+50, self.Pos[1]+50) in Platforms and Direction == "left":
             print("you jumped right")
             self.Pos = (self.Pos[0]+50, self.Pos[1]+50)
@@ -42,32 +42,34 @@ class Square:
             print("you jumped left")
             self.Pos = (self.Pos[0]-50, self.Pos[1]+50)
 
+Square = Square((0, 0), None)
+
 Platforms = []
 
-def PlatformTree(Platform, Amount, Platforms):
-    Pos = Platform.Pos
+def PlatformTree(Platformthing):
+    Pos = Platformthing
     Paths = random.randrange(1, 3)
     if Paths == 1:
-        Platforms.append(Platform((0 - [50, -50][random.randrange(0, 1)], Pos[1] + 50)))
+        Platforms.append((0 - [50, -50][random.randrange(0, 1)], Pos[1] + 50))
     elif Paths == 2:
-        Platforms.append(Platform((Pos[0] - 50, Pos[1] + 50)))
-        Platforms.append(Platform((Pos[0] + 100, Pos[1])))
+        Platforms.append((Pos[0] - 50, Pos[1] + 50))
+        Platforms.append((Pos[0] + 100, Pos[1]))
     else:
         return 0
-    Amount = Amount + Paths if Paths != 3 else 0
-    if Amount < 50:
-        PlatformTree(Platforms[0], Amount, Platforms)
-        PlatformTree(Platforms[1], Amount, Platforms)
 
-#PlatformTree()
+PlatformTree((0, 0))
+while len(Platforms) <= 30:
+    PlatformTree((Platforms[len(Platforms)-1]))
 
 while True:
     Screen.fill((0, 0, 0))
 
-    for i in range(len(Platforms)):
-        pygame.draw.rect(Surface, Platforms[i].Color, Platforms[i].Rect)
+    #for i in range(len(Platforms)):
+    #    pygame.draw.rect(Surface, Platforms[i].Color, Platforms[i].Rect)
 
     Events()
+
+    Square.Jump()
 
     pygame.display.flip()
     Clock.tick(FrameRate)
