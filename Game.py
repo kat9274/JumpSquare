@@ -1,75 +1,80 @@
 import pygame, random
 pygame.init()
 
-Screen = pygame.display.set_mode((750, 1000))
+WIDTH = 1920
+HEIGHT = 1080
+Screen = pygame.display.set_mode((WIDTH, HEIGHT))
 Clock = pygame.time.Clock()
 FrameRate = 60
+
+PlatformRetain = 15
+
+Platforms = []
+Old = []
+
+class Platform:
+    def __init__(self, Pos, Color):
+        Width = 80
+        Height = 20
+        self.Pos = (Pos[0]-(Width/2), Pos[1]-(Height/2))
+        self.Color = Color
+        self.Rect = pygame.Rect(self.Pos, (Width, Height))
+
+        Platforms.append(self)
+
+    def New(self, Direction):
+        Color = (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255))
+        if Direction == 2:
+            Platform((self.Pos[0]-110, self.Pos[1]-75), Color)
+            Platform((self.Pos[0]+190, self.Pos[1]-75), Color)
+        else:
+            Platform((self.Pos[0]+[-110, 190][Direction], self.Pos[1]-75), Color)
+
+class Player:
+    Width = 30
+    Height = 30
+    Pos = (WIDTH/2-(Width/2), HEIGHT-101-(Height/2))
+    Color = (50, 100, 255)
+    Rect = pygame.Rect(Pos, (Width, Height))
+
+    def Jump(Direction):
+        Player.Pos = (Player.Pos[0]+[-150, 150][Direction], Player.Pos[1]-85)
+        Platforms[0].New(random.randint(0, 1))
+        Old.append(Platforms.pop(Platforms.index(Platforms[0])))
+        Player.Rect = pygame.Rect(Player.Pos, (Player.Width, Player.Height))
+
+Platform((WIDTH/2, HEIGHT-75), (50, 100, 255))
+Platforms[0].New(random.randint(0, 1))
+Old.append(Platforms.pop(Platforms.index(Platforms[0])))
 
 def Events():
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE or event.type == pygame.QUIT:
             pygame.quit()
             exit()
-
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.LEFT:
-                Square.Jump("left")
-            if event.key == pygame.RIGHT:
-                Square.Jump("right")
+            if event.key == pygame.K_LEFT:
+                Player.Jump(0)
+            elif event.key == pygame.K_RIGHT:
+                Player.Jump(1)
 
-class Platform:
-    def __init__(self, Pos, Color):
-        self.Width = 100
-        self.Height = 25
-        self.Pos = (Pos[0] - (self.Width/2), Pos[1] - (self.Height/2))
-        self.Color = Color
-        self.Rect = Rect((self.Pos[0], self.Pos[1]), (self.Width, self.Height))
-
-        Platforms.append(self)
-
-class Square:
-    def __init__(self, Pos, Color):
-        self.Width = 50
-        self.Height = 50
-        self.Pos = (Pos[0] - (self.Width/2), Pos[1] - (self.Height/2))
-        self.Rect = pygame.Rect(Pos, (self.Width, self.Height))
-
-    def Jump(self):
-        if (self.Pos[0]+50, self.Pos[1]+50) in Platforms and Direction == "left":
-            print("you jumped right")
-            self.Pos = (self.Pos[0]+50, self.Pos[1]+50)
-        elif (self.Pos[0]-50, self.Pos[1]+50) in Platforms and Direction == "right":
-            print("you jumped left")
-            self.Pos = (self.Pos[0]-50, self.Pos[1]+50)
-
-Square = Square((0, 0), None)
-
-Platforms = []
-
-def PlatformTree(Platformthing):
-    Pos = Platformthing
-    Paths = random.randrange(1, 3)
-    if Paths == 1:
-        Platforms.append((0 - [50, -50][random.randrange(0, 1)], Pos[1] + 50))
-    elif Paths == 2:
-        Platforms.append((Pos[0] - 50, Pos[1] + 50))
-        Platforms.append((Pos[0] + 100, Pos[1]))
-    else:
-        return 0
-
-PlatformTree((0, 0))
-while len(Platforms) <= 30:
-    PlatformTree((Platforms[len(Platforms)-1]))
+    if len(Old) >= PlatformRetain:
+        Old.pop(0)
 
 while True:
-    Screen.fill((0, 0, 0))
+    try:
+        Screen.fill((0, 0, 0))
 
-    #for i in range(len(Platforms)):
-    #    pygame.draw.rect(Surface, Platforms[i].Color, Platforms[i].Rect)
+        for i in range(len(Platforms)):
+            pygame.draw.rect(Screen, Platforms[i].Color, Platforms[i].Rect)
+        for i in range(len(Old)):
+            pygame.draw.rect(Screen, Old[i].Color, Old[i].Rect)
+        pygame.draw.rect(Screen, Player.Color, Player.Rect)
 
-    Events()
+        Events()
 
-    Square.Jump()
-
-    pygame.display.flip()
-    Clock.tick(FrameRate)
+        pygame.display.flip()
+        Clock.tick(FrameRate)
+    except KeyboardInterrupt:
+        pygame.quit()
+        exit()
