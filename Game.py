@@ -14,11 +14,11 @@ Old = []
 
 class Platform:
     def __init__(self, Pos, Color):
-        Width = 80
-        Height = 20
-        self.Pos = (Pos[0]-(Width/2), Pos[1]-(Height/2))
+        self.Width = 80
+        self.Height = 20
+        self.Pos = (Pos[0]-(self.Width/2), Pos[1]-(self.Height/2))
         self.Color = Color
-        self.Rect = pygame.Rect(self.Pos, (Width, Height))
+        self.Rect = pygame.Rect(self.Pos, (self.Width, self.Height))
 
         Platforms.append(self)
 
@@ -37,14 +37,22 @@ class Player:
     Color = (50, 100, 255)
     Rect = pygame.Rect(Pos, (Width, Height))
 
-    def Jump(Direction):
-        Player.Pos = (Player.Pos[0]+[-150, 150][Direction], Player.Pos[1]-85)
-        Platforms[0].New(random.randint(0, 1))
-        Old.append(Platforms.pop(Platforms.index(Platforms[0])))
-        Player.Rect = pygame.Rect(Player.Pos, (Player.Width, Player.Height))
+def Jump(Direction):
+    global Platforms, Old
+    Player.Pos = (Player.Pos[0]+[-150, 150][Direction], Player.Pos[1]-85)
+    if Player.Pos[0] > Platforms[Direction if len(Platforms) > 1 else 0].Pos[0] and Player.Pos[0] < Platforms[Direction if len(Platforms) > 1 else 0].Pos[0]+Platforms[Direction if len(Platforms) > 1 else 0].Width:
+        pass
+    else:
+        pygame.quit()
+        exit()
+    Old = Old + Platforms
+    Platform = Platforms[Direction if len(Platforms) > 1 else 0]
+    Platforms = []
+    Platform.New(random.randint(0, 2))
+    Player.Rect = pygame.Rect(Player.Pos, (Player.Width, Player.Height))
 
 Platform((WIDTH/2, HEIGHT-75), (50, 100, 255))
-Platforms[0].New(random.randint(0, 1))
+Platforms[0].New(random.randint(0, 2))
 Old.append(Platforms.pop(Platforms.index(Platforms[0])))
 
 def Events():
@@ -54,9 +62,9 @@ def Events():
             exit()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                Player.Jump(0)
+                Jump(0)
             elif event.key == pygame.K_RIGHT:
-                Player.Jump(1)
+                Jump(1)
 
     if len(Old) >= PlatformRetain:
         Old.pop(0)
