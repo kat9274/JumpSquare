@@ -1,7 +1,7 @@
 import pygame, random
 pygame.init()
 
-WIDTH = 1920
+WIDTH = 1000
 HEIGHT = 1080
 Screen = pygame.display.set_mode((WIDTH, HEIGHT))
 Clock = pygame.time.Clock()
