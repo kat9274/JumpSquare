@@ -7,7 +7,7 @@ Screen = pygame.display.set_mode((WIDTH, HEIGHT))
 Clock = pygame.time.Clock()
 FrameRate = 60
 
-PlatformRetain = 15
+PlatformRetain = 12
 
 Platforms = []
 Old = []
@@ -73,11 +73,18 @@ while True:
     try:
         Screen.fill((0, 0, 0))
 
+        if Old[0].Pos[1] < 900:
+            for i in range(len(Platforms)):
+                Platforms[i].Pos = (Platforms[i].Pos[0], Platforms[i].Pos[1] + 2.5)
+            for i in range(len(Old)):
+                Old[i].Pos = (Old[i].Pos[0], Old[i].Pos[1] + 2.5)
+            Player.Pos = (Player.Pos[0], Player.Pos[1] + 2.5)
+
         for i in range(len(Platforms)):
-            pygame.draw.rect(Screen, Platforms[i].Color, Platforms[i].Rect)
+            pygame.draw.rect(Screen, Platforms[i].Color, pygame.Rect(Platforms[i].Pos, (Platforms[i].Width, Platforms[i].Height)))
         for i in range(len(Old)):
-            pygame.draw.rect(Screen, Old[i].Color, Old[i].Rect)
-        pygame.draw.rect(Screen, Player.Color, Player.Rect)
+            pygame.draw.rect(Screen, Old[i].Color, pygame.Rect(Old[i].Pos, (Old[i].Width, Old[i].Height)))
+        pygame.draw.rect(Screen, Player.Color, pygame.Rect(Player.Pos, (Player.Width, Player.Height)))
 
         Events()
 
