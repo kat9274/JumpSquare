@@ -2,7 +2,7 @@ import pygame, random
 pygame.init()
 
 WIDTH = 1000
-HEIGHT = 1080
+HEIGHT = 700
 Screen = pygame.display.set_mode((WIDTH, HEIGHT))
 Clock = pygame.time.Clock()
 FrameRate = 60
@@ -28,7 +28,7 @@ class Platform:
             Platform((self.Pos[0]-110, self.Pos[1]-75), Color)
             Platform((self.Pos[0]+190, self.Pos[1]-75), Color)
         else:
-            Platform((self.Pos[0]+[-110, 190][Direction], self.Pos[1]-75), Color)
+            Platform((self.Pos[0]+[-110, 190][Direction if self.Pos[0] <= WIDTH-100 else 1 if self.Pos[0] <= 36 else 0], self.Pos[1]-75), Color)
 
 class Player:
     Width = 30
@@ -87,6 +87,8 @@ while True:
         pygame.draw.rect(Screen, Player.Color, pygame.Rect(Player.Pos, (Player.Width, Player.Height)))
 
         Events()
+
+        print(Player.Pos)
 
         pygame.display.flip()
         Clock.tick(FrameRate)
