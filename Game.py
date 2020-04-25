@@ -19,8 +19,8 @@ class Platform:
         self.Pos = (Pos[0]-(self.Width/2), Pos[1]-(self.Height/2))
         self.Color = Color
         self.Rect = pygame.Rect(self.Pos, (self.Width, self.Height))
-
-        Platforms.append(self)
+        if self.Pos[0] < 1000 or self.Pos[0] > 0:
+            Platforms.append(self)
 
     def New(self, Direction):
         Color = (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255))
@@ -28,7 +28,7 @@ class Platform:
             Platform((self.Pos[0]-110, self.Pos[1]-75), Color)
             Platform((self.Pos[0]+190, self.Pos[1]-75), Color)
         else:
-            Platform((self.Pos[0]+[-110, 190][Direction if self.Pos[0] <= WIDTH-100 else 1 if self.Pos[0] <= 36 else 0], self.Pos[1]-75), Color)
+            Platform((self.Pos[0]+[-110, 190][Direction]), Color)
 
 class Player:
     Width = 30
@@ -52,6 +52,7 @@ def Jump(Direction):
     Player.Rect = pygame.Rect(Player.Pos, (Player.Width, Player.Height))
 
 Platform((WIDTH/2, HEIGHT-75), (50, 100, 255))
+print(Platforms)
 Platforms[0].New(random.randint(0, 2))
 Old.append(Platforms.pop(Platforms.index(Platforms[0])))
 
