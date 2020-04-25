@@ -2,7 +2,7 @@ import pygame, random
 pygame.init()
 
 WIDTH = 1000
-HEIGHT = 700
+HEIGHT = 1000
 Screen = pygame.display.set_mode((WIDTH, HEIGHT))
 Clock = pygame.time.Clock()
 FrameRate = 60
@@ -73,7 +73,7 @@ while True:
     try:
         Screen.fill((0, 0, 0))
 
-        if Old[0].Pos[1] < 900:
+        if Old[0].Pos[1] < HEIGHT - 100:
             for i in range(len(Platforms)):
                 Platforms[i].Pos = (Platforms[i].Pos[0], Platforms[i].Pos[1] + 2.5)
             for i in range(len(Old)):
