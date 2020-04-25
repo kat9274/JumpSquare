@@ -28,7 +28,7 @@ class Platform:
             Platform((self.Pos[0]-110, self.Pos[1]-75), Color)
             Platform((self.Pos[0]+190, self.Pos[1]-75), Color)
         else:
-            Platform((self.Pos[0]+[-110, 190][Direction]), Color)
+            Platform((self.Pos[0]+[-110, 190][Direction], self.Pos[1]-75), Color)
 
 class Player:
     Width = 30
