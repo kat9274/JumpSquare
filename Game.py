@@ -2,7 +2,7 @@ import pygame, random
 pygame.init()
 
 WIDTH = 1000
-HEIGHT = 1000
+HEIGHT = 800
 Screen = pygame.display.set_mode((WIDTH, HEIGHT))
 Clock = pygame.time.Clock()
 FrameRate = 60
@@ -27,8 +27,12 @@ class Platform:
         if Direction == 2:
             Platform((self.Pos[0]-110, self.Pos[1]-75), Color)
             Platform((self.Pos[0]+190, self.Pos[1]-75), Color)
-        else:
+        elif self.Pos[0] > 100 and self.Pos[0] < WIDTH-100:
             Platform((self.Pos[0]+[-110, 190][Direction], self.Pos[1]-75), Color)
+        elif self.Pos[0] <= 100:
+            Platform((self.Pos[0] + 190, self.Pos[1] -75), Color)
+        else:
+            Platform((self.Pos[0] -110, self.Pos[1] -75), Color)
 
 class Player:
     Width = 30
