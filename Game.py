@@ -1,8 +1,9 @@
 import pygame, random
 pygame.init()
 
+SCORE = 0
 WIDTH = 1000
-HEIGHT = 800
+HEIGHT = 900
 Screen = pygame.display.set_mode((WIDTH, HEIGHT))
 Clock = pygame.time.Clock()
 FrameRate = 60
@@ -42,7 +43,7 @@ class Player:
     Rect = pygame.Rect(Pos, (Width, Height))
 
 def Jump(Direction):
-    global Platforms, Old
+    global Platforms, Old, SCORE
     Player.Pos = (Player.Pos[0]+[-150, 150][Direction], Player.Pos[1]-85)
     if Player.Pos[0] > Platforms[Direction if len(Platforms) > 1 else 0].Pos[0] and Player.Pos[0] < Platforms[Direction if len(Platforms) > 1 else 0].Pos[0]+Platforms[Direction if len(Platforms) > 1 else 0].Width:
         pass
@@ -54,6 +55,8 @@ def Jump(Direction):
     Platforms = []
     Platform.New(random.randint(0, 2))
     Player.Rect = pygame.Rect(Player.Pos, (Player.Width, Player.Height))
+    SCORE = SCORE + 1
+    print(SCORE)
 
 Platform((WIDTH/2, HEIGHT-75), (50, 100, 255))
 print(Platforms)
@@ -80,10 +83,10 @@ while True:
 
         if Old[0].Pos[1] < HEIGHT - 100:
             for i in range(len(Platforms)):
-                Platforms[i].Pos = (Platforms[i].Pos[0], Platforms[i].Pos[1] + 2.5)
+                Platforms[i].Pos = (Platforms[i].Pos[0], Platforms[i].Pos[1] + 4)
             for i in range(len(Old)):
-                Old[i].Pos = (Old[i].Pos[0], Old[i].Pos[1] + 2.5)
-            Player.Pos = (Player.Pos[0], Player.Pos[1] + 2.5)
+                Old[i].Pos = (Old[i].Pos[0], Old[i].Pos[1] + 4)
+            Player.Pos = (Player.Pos[0], Player.Pos[1] + 4)
 
         for i in range(len(Platforms)):
             pygame.draw.rect(Screen, Platforms[i].Color, pygame.Rect(Platforms[i].Pos, (Platforms[i].Width, Platforms[i].Height)))
@@ -93,7 +96,6 @@ while True:
 
         Events()
 
-        print(Player.Pos)
 
         pygame.display.flip()
         Clock.tick(FrameRate)
