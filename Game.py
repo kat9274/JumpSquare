@@ -41,14 +41,20 @@ class Player:
     Color = (50, 100, 255)
     Rect = pygame.Rect(Pos, (Width, Height))
 
+def Die():
+    while Player.Pos[1] < HEIGHT:
+        Player.Pos = (Player.Pos[0], Player.Pos[1] + 0.1)
+        Player.Rect = pygame.Rect(Player.Pos, (Player.Width, Player.Height))
+    pygame.quit()
+    exit()
+
 def Jump(Direction):
     global Platforms, Old
     Player.Pos = (Player.Pos[0]+[-150, 150][Direction], Player.Pos[1]-85)
     if Player.Pos[0] > Platforms[Direction if len(Platforms) > 1 else 0].Pos[0] and Player.Pos[0] < Platforms[Direction if len(Platforms) > 1 else 0].Pos[0]+Platforms[Direction if len(Platforms) > 1 else 0].Width and Player.Pos[0] > 0 and Player.Pos[0] < 1000:
         pass
     else:
-        pygame.quit()
-        exit()
+        Die()
     Old = Old + Platforms
     Platform = Platforms[Direction if len(Platforms) > 1 else 0]
     Platforms = []
@@ -56,7 +62,6 @@ def Jump(Direction):
     Player.Rect = pygame.Rect(Player.Pos, (Player.Width, Player.Height))
 
 Platform((WIDTH/2, HEIGHT-75), (50, 100, 255))
-print(Platforms)
 Platforms[0].New(random.randint(0, 2))
 Old.append(Platforms.pop(Platforms.index(Platforms[0])))
 
@@ -80,10 +85,10 @@ while True:
 
         if Old[0].Pos[1] < HEIGHT - 100:
             for i in range(len(Platforms)):
-                Platforms[i].Pos = (Platforms[i].Pos[0], Platforms[i].Pos[1] + 2.5)
+                Platforms[i].Pos = (Platforms[i].Pos[0], Platforms[i].Pos[1] + (10 if Player.Pos[1] < 100 else 2.5))
             for i in range(len(Old)):
-                Old[i].Pos = (Old[i].Pos[0], Old[i].Pos[1] + 2.5)
-            Player.Pos = (Player.Pos[0], Player.Pos[1] + 2.5)
+                Old[i].Pos = (Old[i].Pos[0], Old[i].Pos[1] + (10 if Player.Pos[1] < 100 else 2.5))
+            Player.Pos = (Player.Pos[0], Player.Pos[1] + (10 if Player.Pos[1] < 100 else 2.5))
 
         for i in range(len(Platforms)):
             pygame.draw.rect(Screen, Platforms[i].Color, pygame.Rect(Platforms[i].Pos, (Platforms[i].Width, Platforms[i].Height)))
@@ -93,10 +98,9 @@ while True:
 
         Events()
 
-        print(Player.Pos)
-
         pygame.display.flip()
         Clock.tick(FrameRate)
+
     except KeyboardInterrupt:
         pygame.quit()
         exit()
