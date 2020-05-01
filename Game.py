@@ -2,12 +2,13 @@ import pygame, random
 pygame.init()
 
 WIDTH = 1000
-HEIGHT = 800
+HEIGHT = 1080
 Screen = pygame.display.set_mode((WIDTH, HEIGHT))
 Clock = pygame.time.Clock()
 FrameRate = 60
+Falling = False
 
-PlatformRetain = 8
+PlatformRetain = round(WIDTH / 100)
 
 Platforms = []
 Old = []
@@ -42,9 +43,9 @@ class Player:
     Rect = pygame.Rect(Pos, (Width, Height))
 
 def Die():
-    while Player.Pos[1] < HEIGHT:
-        Player.Pos = (Player.Pos[0], Player.Pos[1] + 0.1)
-        Player.Rect = pygame.Rect(Player.Pos, (Player.Width, Player.Height))
+    #while Player.Pos[1] < HEIGHT:
+    #    Player.Pos = (Player.Pos[0], Player.Pos[1] + 0.1)
+    #    Player.Rect = pygame.Rect(Player.Pos, (Player.Width, Player.Height))
     pygame.quit()
     exit()
 
@@ -79,11 +80,17 @@ def Events():
     if len(Old) >= PlatformRetain:
         Old.pop(0)
 
+    if Player.Pos[1] > HEIGHT:
+        Die()
+
 while True:
     try:
         Screen.fill((0, 0, 0))
 
         if Old[0].Pos[1] < HEIGHT - 100:
+            Falling = True
+
+        if Falling == True:
             for i in range(len(Platforms)):
                 Platforms[i].Pos = (Platforms[i].Pos[0], Platforms[i].Pos[1] + (10 if Player.Pos[1] < 100 else 2.5))
             for i in range(len(Old)):
