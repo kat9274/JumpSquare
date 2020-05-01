@@ -44,7 +44,7 @@ class Player:
 def Jump(Direction):
     global Platforms, Old
     Player.Pos = (Player.Pos[0]+[-150, 150][Direction], Player.Pos[1]-85)
-    if Player.Pos[0] > Platforms[Direction if len(Platforms) > 1 else 0].Pos[0] and Player.Pos[0] < Platforms[Direction if len(Platforms) > 1 else 0].Pos[0]+Platforms[Direction if len(Platforms) > 1 else 0].Width:
+    if Player.Pos[0] > Platforms[Direction if len(Platforms) > 1 else 0].Pos[0] and Player.Pos[0] < Platforms[Direction if len(Platforms) > 1 else 0].Pos[0]+Platforms[Direction if len(Platforms) > 1 else 0].Width and Player.Pos[0] > 0 and Player.Pos[0] < 1000:
         pass
     else:
         pygame.quit()
