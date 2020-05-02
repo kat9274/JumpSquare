@@ -10,7 +10,7 @@ FrameRate = 60
 Falling = False
 Score = 0
 
-PlatformRetain = round(WIDTH / 100)
+PlatformRetain = round(HEIGHT / 100)
 
 Platforms = []
 Old = []
