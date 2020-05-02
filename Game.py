@@ -1,15 +1,14 @@
 import pygame, random
 pygame.init()
-pygame.font.init()
 
 WIDTH = 1920
 HEIGHT = 1080
 Screen = pygame.display.set_mode((WIDTH, HEIGHT))
 Clock = pygame.time.Clock()
 FrameRate = 60
+
 Falling = False
 Score = 0
-
 PlatformRetain = round(HEIGHT / 100)
 
 Platforms = []
