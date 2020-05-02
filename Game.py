@@ -43,9 +43,18 @@ class Player:
     Rect = pygame.Rect(Pos, (Width, Height))
 
 def Die():
-    #while Player.Pos[1] < HEIGHT:
-    #    Player.Pos = (Player.Pos[0], Player.Pos[1] + 0.1)
-    #    Player.Rect = pygame.Rect(Player.Pos, (Player.Width, Player.Height))
+    while Player.Pos[1] < HEIGHT:
+        Screen.fill((0, 0, 0))
+        Player.Pos = (Player.Pos[0], Player.Pos[1] + 5)
+
+        for i in range(len(Platforms)):
+            pygame.draw.rect(Screen, Platforms[i].Color, pygame.Rect(Platforms[i].Pos, (Platforms[i].Width, Platforms[i].Height)))
+        for i in range(len(Old)):
+            pygame.draw.rect(Screen, Old[i].Color, pygame.Rect(Old[i].Pos, (Old[i].Width, Old[i].Height)))
+        pygame.draw.rect(Screen, Player.Color, pygame.Rect(Player.Pos, (Player.Width, Player.Height)))
+
+        pygame.display.flip()
+        Clock.tick(FrameRate)
     pygame.quit()
     exit()
 
@@ -60,7 +69,6 @@ def Jump(Direction):
     Platform = Platforms[Direction if len(Platforms) > 1 else 0]
     Platforms = []
     Platform.New(random.randint(0, 2))
-    Player.Rect = pygame.Rect(Player.Pos, (Player.Width, Player.Height))
 
 Platform((WIDTH/2, HEIGHT-75), (50, 100, 255))
 Platforms[0].New(random.randint(0, 2))
