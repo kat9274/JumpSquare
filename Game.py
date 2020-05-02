@@ -1,5 +1,6 @@
 import pygame, random
 pygame.init()
+pygame.font.init()
 
 WIDTH = 1000
 HEIGHT = 1080
@@ -7,6 +8,7 @@ Screen = pygame.display.set_mode((WIDTH, HEIGHT))
 Clock = pygame.time.Clock()
 FrameRate = 60
 Falling = False
+Score = 0
 
 PlatformRetain = round(WIDTH / 100)
 
@@ -47,6 +49,7 @@ def Die():
         Screen.fill((0, 0, 0))
         Player.Pos = (Player.Pos[0], Player.Pos[1] + 5)
 
+        Screen.blit(pygame.font.Font('freesansbold.ttf', 50).render(str(Score), True, (60, 95, 100)), (WIDTH//2, 0))
         for i in range(len(Platforms)):
             pygame.draw.rect(Screen, Platforms[i].Color, pygame.Rect(Platforms[i].Pos, (Platforms[i].Width, Platforms[i].Height)))
         for i in range(len(Old)):
@@ -59,9 +62,10 @@ def Die():
     exit()
 
 def Jump(Direction):
-    global Platforms, Old
+    global Platforms, Old, Score
     Player.Pos = (Player.Pos[0]+[-150, 150][Direction], Player.Pos[1]-85)
     if Player.Pos[0] > Platforms[Direction if len(Platforms) > 1 else 0].Pos[0] and Player.Pos[0] < Platforms[Direction if len(Platforms) > 1 else 0].Pos[0]+Platforms[Direction if len(Platforms) > 1 else 0].Width and Player.Pos[0] > 0 and Player.Pos[0] < 1000:
+        Score += 1
         pass
     else:
         Die()
@@ -105,6 +109,7 @@ while True:
                 Old[i].Pos = (Old[i].Pos[0], Old[i].Pos[1] + (10 if Player.Pos[1] < 100 else 2.5))
             Player.Pos = (Player.Pos[0], Player.Pos[1] + (10 if Player.Pos[1] < 100 else 2.5))
 
+        Screen.blit(pygame.font.Font('freesansbold.ttf', 50).render(str(Score), True, (60, 95, 100)), (WIDTH//2, 0))
         for i in range(len(Platforms)):
             pygame.draw.rect(Screen, Platforms[i].Color, pygame.Rect(Platforms[i].Pos, (Platforms[i].Width, Platforms[i].Height)))
         for i in range(len(Old)):
