@@ -1,14 +1,9 @@
 import pygame, random
 pygame.init()
 
-<<<<<<< HEAD
 SCORE = 0
 WIDTH = 1000
 HEIGHT = 900
-=======
-WIDTH = 1920
-HEIGHT = 1080
->>>>>>> bfeba87b0bdd6a3b1da502cc0824e9ce69ac004c
 Screen = pygame.display.set_mode((WIDTH, HEIGHT))
 Clock = pygame.time.Clock()
 FrameRate = 60
@@ -67,11 +62,7 @@ def Die():
     exit()
 
 def Jump(Direction):
-<<<<<<< HEAD
     global Platforms, Old, SCORE
-=======
-    global Platforms, Old, Score
->>>>>>> bfeba87b0bdd6a3b1da502cc0824e9ce69ac004c
     Player.Pos = (Player.Pos[0]+[-150, 150][Direction], Player.Pos[1]-85)
     if Player.Pos[0] > Platforms[Direction if len(Platforms) > 1 else 0].Pos[0] and Player.Pos[0] < Platforms[Direction if len(Platforms) > 1 else 0].Pos[0]+Platforms[Direction if len(Platforms) > 1 else 0].Width and Player.Pos[0] > 0 and Player.Pos[0] < WIDTH:
         Score += 1
@@ -82,12 +73,9 @@ def Jump(Direction):
     Platform = Platforms[Direction if len(Platforms) > 1 else 0]
     Platforms = []
     Platform.New(random.randint(0, 2))
-<<<<<<< HEAD
     Player.Rect = pygame.Rect(Player.Pos, (Player.Width, Player.Height))
     SCORE = SCORE + 1
     print(SCORE)
-=======
->>>>>>> bfeba87b0bdd6a3b1da502cc0824e9ce69ac004c
 
 Platform((WIDTH/2, HEIGHT-75), (50, 100, 255))
 Platforms[0].New(random.randint(0, 2))
@@ -119,17 +107,10 @@ while True:
 
         if Falling == True:
             for i in range(len(Platforms)):
-<<<<<<< HEAD
                 Platforms[i].Pos = (Platforms[i].Pos[0], Platforms[i].Pos[1] + 4)
             for i in range(len(Old)):
                 Old[i].Pos = (Old[i].Pos[0], Old[i].Pos[1] + 4)
             Player.Pos = (Player.Pos[0], Player.Pos[1] + 4)
-=======
-                Platforms[i].Pos = (Platforms[i].Pos[0], Platforms[i].Pos[1] + (10 if Player.Pos[1] < 100 else 2.5))
-            for i in range(len(Old)):
-                Old[i].Pos = (Old[i].Pos[0], Old[i].Pos[1] + (10 if Player.Pos[1] < 100 else 2.5))
-            Player.Pos = (Player.Pos[0], Player.Pos[1] + (10 if Player.Pos[1] < 100 else 2.5))
->>>>>>> bfeba87b0bdd6a3b1da502cc0824e9ce69ac004c
 
         Screen.blit(pygame.font.Font('freesansbold.ttf', 50).render(str(Score), True, (60, 95, 100)), (WIDTH//2, 0))
         for i in range(len(Platforms)):
@@ -140,10 +121,7 @@ while True:
 
         Events()
 
-<<<<<<< HEAD
 
-=======
->>>>>>> bfeba87b0bdd6a3b1da502cc0824e9ce69ac004c
         pygame.display.flip()
         Clock.tick(FrameRate)
 
