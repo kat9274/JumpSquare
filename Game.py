@@ -2,7 +2,7 @@ import pygame, random
 pygame.init()
 pygame.font.init()
 
-WIDTH = 1000
+WIDTH = 1920
 HEIGHT = 1080
 Screen = pygame.display.set_mode((WIDTH, HEIGHT))
 Clock = pygame.time.Clock()
@@ -64,7 +64,7 @@ def Die():
 def Jump(Direction):
     global Platforms, Old, Score
     Player.Pos = (Player.Pos[0]+[-150, 150][Direction], Player.Pos[1]-85)
-    if Player.Pos[0] > Platforms[Direction if len(Platforms) > 1 else 0].Pos[0] and Player.Pos[0] < Platforms[Direction if len(Platforms) > 1 else 0].Pos[0]+Platforms[Direction if len(Platforms) > 1 else 0].Width and Player.Pos[0] > 0 and Player.Pos[0] < 1000:
+    if Player.Pos[0] > Platforms[Direction if len(Platforms) > 1 else 0].Pos[0] and Player.Pos[0] < Platforms[Direction if len(Platforms) > 1 else 0].Pos[0]+Platforms[Direction if len(Platforms) > 1 else 0].Width and Player.Pos[0] > 0 and Player.Pos[0] < WIDTH:
         Score += 1
         pass
     else:
