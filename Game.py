@@ -6,6 +6,7 @@ Clock = pygame.time.Clock()
 
 WIDTH, HEIGHT = pygame.display.get_surface().get_size()
 RETAIN = round(HEIGHT / 100)
+RUNNING = False
 
 Platforms = []
 Old = []
@@ -19,10 +20,10 @@ class Platform:
 
     def New(self, Direction):
         if Direction == 2:
-            Platform((self.Pos[0]-110, self.Pos[1]-75), (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255)))
-            Platform((self.Pos[0]+190, self.Pos[1]-75), (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255)))
+            Platform((self.Pos[0]-110, self.Pos[1]-75), (random.randrange(30, 150), random.randrange(30, 255), random.randrange(30, 255)))
+            Platform((self.Pos[0]+190, self.Pos[1]-75), (random.randrange(30, 150), random.randrange(30, 255), random.randrange(30, 255)))
             return 0
-        Platform((self.Pos[0]+([-110, 190][Direction] if self.Pos[0] > 100 and self.Pos[0] < WIDTH-100 else (190 if self.Pos[0] <= 100 else -110)), self.Pos[1]-75), (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255)))
+        Platform((self.Pos[0]+([-110, 190][Direction] if self.Pos[0] > 100 and self.Pos[0] < WIDTH-100 else (190 if self.Pos[0] <= 100 else -110)), self.Pos[1]-75), (random.randrange(30, 150), random.randrange(30, 255), random.randrange(30, 255)))
 
 class Player:
     Width, Height = 30, 30
@@ -82,7 +83,31 @@ def Events():
     if Player.Pos[1] > HEIGHT:
         Die()
 
-while True:
+while not RUNNING:
+    try:
+        Screen.fill((0, 0, 0))
+
+        Screen.blit(pygame.font.Font('freesansbold.ttf', 80).render("Jump Square", True, (60, 150, 100)), (WIDTH//2-200, HEIGHT/6))
+
+        pygame.draw.rect(Screen, (255, 0, 0), pygame.Rect((WIDTH//2-100, HEIGHT/3-50), (200, 100)))
+        Screen.blit(pygame.font.Font('freesansbold.ttf', 50).render("Start", True, (60, 150, 100)), (WIDTH//2-75, HEIGHT/3-25))
+
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE or event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mousepos = pygame.mouse.get_pos()
+                if mousepos[0] > WIDTH//2-100 and mousepos[0] < WIDTH//2+100 and mousepos[1] > HEIGHT/3-50 and mousepos[1] < HEIGHT/3+50:
+                    RUNNING = True
+
+        pygame.display.flip()
+        Clock.tick(60)
+    except KeyboardInterrupt:
+        pygame.quit()
+        exit()
+
+while RUNNING:
     try:
         Screen.fill((0, 0, 0))
 
@@ -91,10 +116,10 @@ while True:
 
         if Player.Falling == True:
             for i in range(len(Platforms)):
-                Platforms[i].Pos = (Platforms[i].Pos[0], Platforms[i].Pos[1] + (10 if Player.Pos[1] < 100 else 2.5))
+                Platforms[i].Pos = (Platforms[i].Pos[0], Platforms[i].Pos[1] + (10 if Player.Pos[1] < 150 else 2.5))
             for i in range(len(Old)):
-                Old[i].Pos = (Old[i].Pos[0], Old[i].Pos[1] + (10 if Player.Pos[1] < 100 else 2.5))
-            Player.Pos = (Player.Pos[0], Player.Pos[1] + (10 if Player.Pos[1] < 100 else 2.5))
+                Old[i].Pos = (Old[i].Pos[0], Old[i].Pos[1] + (10 if Player.Pos[1] < 150 else 2.5))
+            Player.Pos = (Player.Pos[0], Player.Pos[1] + (10 if Player.Pos[1] < 150 else 2.5))
 
         Screen.blit(pygame.font.Font('freesansbold.ttf', 50).render(str(Player.Score), True, (60, 95, 100)), (WIDTH//2, 0))
         for i in range(len(Platforms)):
